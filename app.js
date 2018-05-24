@@ -122,21 +122,21 @@ canvas.addEventListener("mouseup", function(){
 
 
 var color = {
-	r: 84,
+	r: 50,
 	g: 192,
 	b: 255,
 };
 
-var offset = 20;
+var offset = 5;
 
 function randomeColorGenerator(color){
 	var value = (color.r + color.g + color.b)/3;
 	var newValue =  value + 2*Math.random() * offset - offset;
 	var valueRatio = newValue / value;
 
-	color.r = color.r * valueRatio;
+	// color.r = color.r * valueRatio;
 	color.g = color.g * valueRatio;
-	color.b = color.b * valueRatio;
+	// color.b = color.b * valueRatio;
 
 	// var red = Math.floor(Math.random() * 0) + 1
 	// var green = Math.floor(Math.random() * 0) + 1    
@@ -151,6 +151,6 @@ function randomeColorGenerator(color){
 	// color.r = red;
 	// color.g = green;
 	// color.b = blue;
-	console.log(color);
+	// console.log(color);
 	return color;
 }
