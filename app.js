@@ -130,17 +130,17 @@ var color = {
 var offset = 5;
 
 function randomeColorGenerator(color){
-	var value = (color.r + color.g + color.b)/3;
-	var newValue =  value + 2*Math.random() * offset - offset;
-	var valueRatio = newValue / value;
+	// var value = (color.r + color.g + color.b)/3;
+	// var newValue =  value + 2*Math.random() * offset - offset;
+	// var valueRatio = newValue / value;
 
 	// color.r = color.r * valueRatio;
-	color.g = color.g * valueRatio;
+	// color.g = color.g * valueRatio;
 	// color.b = color.b * valueRatio;
 
-	// var red = Math.floor(Math.random() * 0) + 1
-	// var green = Math.floor(Math.random() * 0) + 1    
-	// var blue = Math.floor(Math.random() * 255) + 1    
+	var red = 1000 + Math.floor(Math.random() * 50) + 1
+	var green = 1000 + Math.floor(Math.random() * 200) + 1    
+	var blue = 1000 + Math.floor(Math.random() * 255) + 1    
 
 	// if(color != null){
 	// 	red = (red + color.r);
@@ -148,9 +148,8 @@ function randomeColorGenerator(color){
 	// 	blue = (blue + color.b);
 	// }
 
-	// color.r = red;
-	// color.g = green;
-	// color.b = blue;
-	// console.log(color);
+	color.r = red;
+	color.g = green;
+	color.b = blue;
 	return color;
 }
