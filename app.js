@@ -1,11 +1,9 @@
 var canvas  = document.getElementById('canvas');
 var canvasContext = canvas.getContext('2d');
-
-var current = [];
-var previous = [];
 var columns;
 var rows;
-
+var current = [];
+var previous = [];
 var damping = 0.99;
 var isMouseDown = false;
 var isStarted = false;
