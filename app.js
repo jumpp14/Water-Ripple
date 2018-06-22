@@ -68,6 +68,7 @@ function draw(){
 }
 
 init();
+
 $('#canvas').click(function(){
 	isStarted = true;
 	var mouseX = event.pageX - canvas.offsetLeft;
@@ -83,11 +84,8 @@ canvas.addEventListener("mousedown", function(){
 	isStarted = true;
 });
 
-var change = 1
-var times = 1
 canvas.addEventListener("mousemove", function(event){
 	if(isMouseDown == true){
-		times += 1
 		var mouseX = event.pageX - canvas.offsetLeft;
 		var mouseY = event.pageY - canvas.offsetTop;
 		colorGenerator(color);
@@ -103,15 +101,15 @@ canvas.addEventListener("mouseup", function(){
 });
 
 var color = {
-	r: 50,
-	g: 192,
+	r: 255,
+	g: 255,
 	b: 255,
 };
 
 function colorGenerator(color){
-	var red = 1000 + Math.floor(Math.random() * 50) + 1
-	var green = 1000 + Math.floor(Math.random() * 200) + 1    
-	var blue = 1000 + Math.floor(Math.random() * 255) + 1    
+	var red = (150 + Math.floor(Math.random() * 150)) * 5;
+	var green = (240 + Math.floor(Math.random() * 150)) * 5; 
+	var blue = (250 + Math.floor(Math.random() * 200)) * 5;  
 	color.r = red;
 	color.g = green;
 	color.b = blue;
