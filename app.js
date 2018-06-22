@@ -1,114 +1,98 @@
 var canvas  = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-
-var cols;
-var rows;
+var canvasContext = canvas.getContext('2d');
 
 var current = [];
 var previous = [];
+var columns;
+var rows;
 
 var damping = 0.99;
+var isMouseDown = false;
+var isStarted = false;
 
-var ifMouseDown = false;
-
-var ifStarted = false;
-
-function make2DArray(arr, cols, rows){
+function make2DArray(array, columns, rows){
 	for(var i = 0; i < rows; i++){
-		arr.push([]);
-		for(var j = 0; j < cols * 4; j++){
+		array.push([]);
+		for(var j = 0; j < columns * 4; j++){
 			if(j % 4 == 3){
-				arr[i][j] = 255;
+				// specifies the color is fully opaque
+				array[i][j] = 255;
 			}
 			else {
-				arr[i][j] = 0;
+				// initialize the array with color black
+				array[i][j] = 0;
 			}
 		}
 	}
-	return arr;
+	return array;
 }
 
-
 function init(){
-	cols = canvas.width;
+	columns = canvas.width;
 	rows = canvas.height;
-	current = make2DArray(current, cols, rows);
-	previous = make2DArray(previous, cols, rows);
-	ifStarted = false;
+	current = make2DArray(current, columns, rows);
+	previous = make2DArray(previous, columns, rows);
+	isStarted = false;
 	window.requestAnimationFrame(draw);
 }
 
-
 function draw(){
-	ctx.fillStyle = "black";  
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	canvasContext.fillStyle = "black";  
+	canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+	var imageData = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
 	var data = imageData.data;
 
-	if(ifStarted == true){
+	if(isStarted == true){
 		for(var i = 1; i < (rows - 1); i++){
-			for(var j = 4; j < (cols - 1) * 4; j++){
+			for(var j = 4; j < (columns - 1) * 4; j++){
 				if(j % 4 == 3){
 					if(current[i][j] != 255){
 						current[i][j] = (previous[i-1][j] + previous[i+1][j] + previous[i][j-4] + previous[i][j+4]) / 2 - current[i][j];
 	        			current[i][j] = current[i][j] * damping;
-	          	
-	          			var index = j + i * cols * 4;
+	          			var index = j + i * columns * 4;
 	        			data[index] = current[i][j];
 					}
 				}
 				else {
 					current[i][j] = (previous[i-1][j] + previous[i+1][j] + previous[i][j-4] + previous[i][j+4]) / 2 - current[i][j];
 	        		current[i][j] = current[i][j] * damping;
-	          	
-	          		var index = j + i * cols * 4;
+	          		var index = j + i * columns * 4;
 	        		data[index] = current[i][j];
 	        	} 
 			}
 		}
 	}
-
-
-	ctx.putImageData(imageData, 0, 0);
-
+	canvasContext.putImageData(imageData, 0, 0);
 	var temp = previous;
 	previous = current;
 	current = temp;
-
 	window.requestAnimationFrame(draw);
-
 }
 
-
 init();
-
-$(document).ready(function(){
-	$('#canvas').click(function(){
-		ifStarted = true;
-		var mouseX = event.pageX - canvas.offsetLeft;
-		var mouseY = event.pageY - canvas.offsetTop;
-		previous[mouseY][mouseX*4] = 159;
-		previous[mouseY][mouseX*4+1] = 250;
-		previous[mouseY][mouseX*4+2] = 255;
-		previous[mouseY][mouseX*4+3] = 255;
-
-	});
+$('#canvas').click(function(){
+	isStarted = true;
+	var mouseX = event.pageX - canvas.offsetLeft;
+	var mouseY = event.pageY - canvas.offsetTop;
+	previous[mouseY][mouseX*4] = 159;
+	previous[mouseY][mouseX*4+1] = 250;
+	previous[mouseY][mouseX*4+2] = 255;
+	previous[mouseY][mouseX*4+3] = 255;
 });
 
 canvas.addEventListener("mousedown", function(){
-	ifMouseDown = true;
-	ifStarted = true;
+	isMouseDown = true;
+	isStarted = true;
 });
 
 var change = 1
 var times = 1
 canvas.addEventListener("mousemove", function(event){
-	if(ifMouseDown == true){
+	if(isMouseDown == true){
 		times += 1
 		var mouseX = event.pageX - canvas.offsetLeft;
 		var mouseY = event.pageY - canvas.offsetTop;
-		randomeColorGenerator(color);
+		colorGenerator(color);
 		previous[mouseY][mouseX*4] = color.r;
 		previous[mouseY][mouseX*4+1] = color.g;
 		previous[mouseY][mouseX*4+2] = color.b;
@@ -117,9 +101,8 @@ canvas.addEventListener("mousemove", function(event){
 });
 
 canvas.addEventListener("mouseup", function(){
-	ifMouseDown = false;
+	isMouseDown = false;
 });
-
 
 var color = {
 	r: 50,
@@ -127,27 +110,10 @@ var color = {
 	b: 255,
 };
 
-var offset = 5;
-
-function randomeColorGenerator(color){
-	// var value = (color.r + color.g + color.b)/3;
-	// var newValue =  value + 2*Math.random() * offset - offset;
-	// var valueRatio = newValue / value;
-
-	// color.r = color.r * valueRatio;
-	// color.g = color.g * valueRatio;
-	// color.b = color.b * valueRatio;
-
+function colorGenerator(color){
 	var red = 1000 + Math.floor(Math.random() * 50) + 1
 	var green = 1000 + Math.floor(Math.random() * 200) + 1    
 	var blue = 1000 + Math.floor(Math.random() * 255) + 1    
-
-	// if(color != null){
-	// 	red = (red + color.r);
-	// 	green = (green + color.g);
-	// 	blue = (blue + color.b);
-	// }
-
 	color.r = red;
 	color.g = green;
 	color.b = blue;
